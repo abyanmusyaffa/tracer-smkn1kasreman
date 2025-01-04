@@ -13,6 +13,7 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use App\Models\Testimonial as TestimonialModel;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Mokhosh\FilamentRating\Components\Rating;
 
@@ -51,11 +52,13 @@ class Testimonial extends Page implements HasForms
                     'lg' => 12,
                 ])
                 ->schema([
+                Hidden::make('show')
+                    ->default(true),
                 Textarea::make('content')
                     ->hint(fn ($state, $component) => 'Sisa ' . $component->getMaxLength() - strlen($state) . ' Karakter') 
                     ->maxlength(400) 
                     ->live()
-                    ->label('Isi')
+                    ->label('Cerita')
                     ->rows(5)
                     ->required()
                     ->columnSpan([

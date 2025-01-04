@@ -54,7 +54,7 @@ class Profile extends Page implements HasForms
                 ])
                 ->schema([
                     TextInput::make('username')
-                        ->readOnly()
+                        ->disabled()
                         ->unique(ignorable: $this->ignoredUser )
                         ->required()
                         ->maxLength(255)
@@ -63,6 +63,7 @@ class Profile extends Page implements HasForms
                             'lg' => 6,
                         ]),
                     TextInput::make('password')
+                        ->helperText('Ubah password anda')
                         ->password()
                         ->revealable()
                         ->afterStateHydrated(function (TextInput $component, $state) {
@@ -86,7 +87,9 @@ class Profile extends Page implements HasForms
                     TextInput::make('name')
                         ->label('Name')
                         ->required()
-                        ->maxLength(25)
+                        ->helperText('Masukkan nama dan gelar anda')
+                        ->hint(fn ($state, $component) => 'Sisa ' . $component->getMaxLength() - strlen($state) . ' Karakter')
+                        ->maxLength(28)
                         ->columnSpan([
                             'default' => 2,
                             'lg' => 12,
