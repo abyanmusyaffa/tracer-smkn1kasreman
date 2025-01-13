@@ -14,22 +14,24 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Filament\Models\Contracts\FilamentUser;
 use Illuminate\Support\Facades\Storage;
-
+use Filament\Panel;
 use App\Models\Major;
-
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-
 use Illuminate\Database\Eloquent\Relations\HasOne;
-
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class Alumni extends Authenticatable
+class Alumni extends Authenticatable // implements FilamentUser
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
+    // public function canAccessPanel(Panel $panel): bool
+    // {
+    //     return true;
+    // }
     /**
      * The attributes that are mass assignable.
      *
@@ -73,7 +75,6 @@ class Alumni extends Authenticatable
             }
         });
     
-        // Menghapus file lama saat record diperbarui
         static::updating(function ($alumni) {
             if ($alumni->isDirty('photo')) {
                 $oldPhoto = $alumni->getOriginal('photo');

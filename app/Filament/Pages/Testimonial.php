@@ -53,13 +53,16 @@ class Testimonial extends Page implements HasForms
                 ])
                 ->schema([
                 Hidden::make('show')
-                    ->default(true),
+                    ->default(false)
+                    ->afterStateHydrated(fn ($state, callable $set) => $set('show', $state ?? false)),
                 Textarea::make('content')
-                    ->hint(fn ($state, $component) => 'Sisa ' . $component->getMaxLength() - strlen($state) . ' Karakter') 
+                    ->hint(fn ($state, $component) => strlen($state) . ' Karakter | Sisa ' . $component->getMaxLength() - strlen($state) . ' Karakter') 
                     ->maxlength(400) 
+                    ->helperText('Minimal 200 Karakter')
+                    ->minLength(250)
                     ->live()
                     ->label('Cerita')
-                    ->rows(5)
+                    ->rows(8)
                     ->required()
                     ->columnSpan([
                         'default' => 2,
@@ -68,7 +71,7 @@ class Testimonial extends Page implements HasForms
                 Rating::make('rating')
                     ->required()
                     ->stars(5)
-                    ->size('xl')
+                    ->size('xl'),
                 ]),
             ])
             ->statePath('data');
